@@ -1,0 +1,71 @@
+// C++ Program to find Landau's Function for given Number
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// to store the Landau's function
+int Landau_func = INT_MIN;
+// Function to find Greatest common divisor of two Numbers
+
+int GCD(int a, int b)
+{
+    if (a == 0)
+        return b;
+    return GCD(b % a, a);
+}
+
+// Function to find Least Common Multiple of two Numbers
+int LCM(int a, int b)
+{
+    return (a * b) / GCD(a, b);
+}
+
+// Function to find Least Common Multiple of Given set of Numbers
+void find_LCM(vector<int> vec)
+{
+    int ans = vec[0];
+    for (int i = 0; i < vec.size(); i += 1)
+    {
+        ans = LCM(ans, vec[i]);
+    }
+    Landau_func = max(Landau_func, ans);
+}
+
+/* A Recursive function to find different ways in
+which given Number can be
+written as sum of positive integers.*/
+void Find_Ways(vector<int> vec, int i, int n)
+{
+    // If sum of vector become n then calculate the LCM of vector(Base case)
+    if (n == 0)
+    {
+        find_LCM(vec);
+    }
+
+    for (int k = i; k <= n; k += 1)
+    {
+        // Add current element to a vector
+        vec.push_back(k);
+        // recursive call with reduced sum
+        Find_Ways(vec, k, n - k);
+        // Remove current element from vector
+        vec.pop_back();
+    }
+}
+// Function to find Landau's function for given Number n.
+void LandauFunction(int n)
+{
+    vector<int> vec;
+    Find_Ways(vec, 1, n);
+    // Print the Landau's function
+    cout <<"Landau function of "<<n<<" is "<< Landau_func << "\n";
+}
+
+int main()
+{
+    int n;
+    cout<<"Enter value of n: ";
+    cin >> n;
+    LandauFunction(n);
+    return 0;
+}
